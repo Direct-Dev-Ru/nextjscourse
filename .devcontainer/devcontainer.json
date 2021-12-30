@@ -1,0 +1,51 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.209.5/containers/javascript-node-mongo
+// Update the VARIANT arg in docker-compose.yml to pick a Node.js version
+{
+  "name": "Node & Mongo",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "workbench.colorTheme": "GitHub Dark Dimmed"
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "mongodb.mongodb-vscode",
+    "naumovs.color-highlight",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "ritwickdey.liveserver",
+    "ms-vsliveshare.vsliveshare",
+    "esbenp.prettier-vscode",
+    "visualstudioexptteam.vscodeintellicode",
+    "pkief.material-icon-theme",
+    "zignd.html-css-class-completion",
+    "jawandarajbir.react-vscode-extension-pack",
+    "johnpapa.winteriscoming",
+    "github.github-vscode-theme",
+    "stylelint.vscode-stylelint",
+    "graphql.vscode-graphql",
+    "anseki.vscode-color",
+    "humao.rest-client"
+  ],
+  //Extensions list: https://proglib.io/p/vscode-javascript-plugins
+  
+  
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [3000, 27017],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "yarn install",
+
+  // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "node",
+  "features": {
+    "git": "latest"
+  }
+}
