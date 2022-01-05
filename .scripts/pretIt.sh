@@ -1,2 +1,2 @@
-cd ../32-adding-routing/src
+cd ../Simple React Demo App/src
 npx prettier --write .

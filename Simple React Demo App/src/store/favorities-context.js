@@ -36,4 +36,4 @@ export function FavoritiesContextProvider(props) {
   return <FavoritiesContext.Provider value={context}>{props.children}</FavoritiesContext.Provider>;
 }
 
-export default FavoritiesContext
+export default FavoritiesContext;

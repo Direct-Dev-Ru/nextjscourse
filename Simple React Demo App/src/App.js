@@ -10,22 +10,19 @@ import Layout from './components/layout/Layout';
 
 function App() {
   return (
-    
-      <Layout>
-        
-        <Switch>
-          <Route path='/' exact>
-            <AllMeetupsPage />
-          </Route>
-          <Route path='/new-meetup'>
-            <NewMeetupPage />
-          </Route>
-          <Route path='/favorities'>
-            <FavoritiesPage />
-          </Route>
-        </Switch>
-      </Layout>
-    
+    <Layout>
+      <Switch>
+        <Route path='/' exact>
+          <AllMeetupsPage />
+        </Route>
+        <Route path='/new-meetup'>
+          <NewMeetupPage />
+        </Route>
+        <Route path='/favorities'>
+          <FavoritiesPage />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
