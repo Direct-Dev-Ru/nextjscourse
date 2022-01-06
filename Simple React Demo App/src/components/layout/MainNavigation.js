@@ -30,7 +30,7 @@ function MainNavigation(props) {
 
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>Amazing MeetUp React App</div>
+      <div className={classes.logo}>MeetUp App</div>
       <nav>
         <ul>
           {/* <li>
