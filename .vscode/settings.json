@@ -3,7 +3,8 @@
     "node_modules/": true,
     "redux--01-start/": true,
     "Simple React Demo App/": true,
-    "Nextjs-Section-3/": false,
-    "Nextjs-Section-3/node_modules/": true
+    "Nextjs-Section-3/": true,
+    "Nextjs-Section-3/node_modules/": true,
+    "nextjs-sec3-with-tailwindcss/": false
   }
 }
