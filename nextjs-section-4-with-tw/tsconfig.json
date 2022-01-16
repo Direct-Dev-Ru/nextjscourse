@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "types": [],
+    "declaration": true,
+    "typeRoots": [
+      /* List of folders to include type definitions from. */
+      "node_modules/@types",
+      "src/typings.d.ts"
+    ],
+    "noImplicitAny": true,
+    "downlevelIteration": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

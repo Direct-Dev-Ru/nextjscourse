@@ -1,29 +1,20 @@
-import Head from 'next/head';
+import Link from 'next/link';
+import EventList from '../components/events/EventList';
 import { getFeaturedEvents } from './api/dummy-data';
 
 export default function HomePage() {
   const featuredEvents = getFeaturedEvents();
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>
-      <Head>
-        <title>Demo Events App</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
-      <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center'>
-        <h1 className='text-6xl font-bold'>Demo Events NextJs App</h1>
-      </main>
-
-      <footer className='flex items-center justify-center w-full h-24 border-t'>
-        <a
-          className='flex items-center justify-center'
-          href='https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Powered by <img src='/vercel.svg' alt='Vercel Logo' className='h-4 ml-2' />
-        </a>
-      </footer>
+      <Link href='/events'>
+        <h1 className='text-6xl font-bold hover:text-blue-600 focus:text-blue-600 cursor-pointer'>
+          Demo Events NextJs App
+        </h1>
+      </Link>
+      <div className="m-5">
+        <h2 className='text-3xl font-bold m-3'>Featured Events: </h2>
+        <EventList items={featuredEvents} />
+      </div>
     </div>
   );
 }

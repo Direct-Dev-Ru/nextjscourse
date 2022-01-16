@@ -6,7 +6,12 @@ export default function EventList(props: any) {
   const { items } = props;
   return (
     // <section className='pt-20 lg:pt-[0px] pb-10 lg:pb-20 bg-[#F3F4F6]'>
-    <section className={classes.list}>
+    // <section className={classes.list}>
+    //   {items.map((event: any) => (
+    //     <EventItem key={event.id} event={event} />
+    //   ))}
+    // </section>
+    <section className='flex flex-col'>
       {items.map((event: any) => (
         <EventItem key={event.id} event={event} />
       ))}
