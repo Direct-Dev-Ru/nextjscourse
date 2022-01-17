@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import classes from './EventItem.module.css';
 
 function EventItem(props: any) {
-  const { title, image, date, location, id } = props.event;
+  const { title, image, date, location, id, description } = props.event;
 
   const humanReadableDate = dayjs(date).format('DD.MM.YYYY');
   const formattedAddress = location.replace(', ', '\n');
@@ -21,7 +21,7 @@ function EventItem(props: any) {
         <div className='md:shrink-0'>
           <img className='h-48 w-full object-cover md:h-full md:w-48' src={`/${image}`} alt={title} />
         </div>
-        <div className='p-8 flex flex-col text-left'>
+        <div className='p-4 flex flex-col text-left '>
           <div className='uppercase tracking-wide text-xl mb-5 text-indigo-500 font-semibold text-center'>{title}</div>
           <p className='text-slate-500'>
             <time>
@@ -39,6 +39,7 @@ function EventItem(props: any) {
               {formattedAddress}
             </address>
           </p>
+          <p className='mt-2 text-slate-500 '>{description}</p>
           <div className={`${classes.actions} mt-20`}>
             <Button link={exploreLink}>
               <span> Explore This Event</span>
