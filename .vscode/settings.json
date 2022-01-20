@@ -5,6 +5,28 @@
     "Simple React Demo App/": true,
     "Nextjs-Section-3/": true,
     "Nextjs-Section-3/node_modules/": true,
-    "nextjs-sec3-with-tailwindcss/": false
-  }
+    "nextjs-sec3-with-tailwindcss/": true,
+    "nextjs-section-4-with-tw/": false,
+    "nextjs_express/": false
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#286b78",
+    "activityBar.activeBorder": "#481840",
+    "activityBar.background": "#286b78",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#481840",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "sash.hoverBorder": "#286b78",
+    "statusBar.background": "#1b4952",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#286b78",
+    "statusBarItem.remoteBackground": "#1b4952",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#1b4952",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#1b495299",
+    "titleBar.inactiveForeground": "#e7e7e799"
+},
+  "peacock.color": "#1b4952"
 }
