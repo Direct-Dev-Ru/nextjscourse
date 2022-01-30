@@ -1,0 +1,18 @@
+.loader_wrapper {
+    background: white;
+    height: 100vh;
+    width: 60%;
+    margin: 0 auto;
+    padding: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    resize: both;
+    overflow: auto;
+}
+
+.loader {
+    padding: 20px;
+    resize: both;
+    overflow: auto;
+}
