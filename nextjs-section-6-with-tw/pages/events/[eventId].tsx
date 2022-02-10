@@ -1,42 +1,42 @@
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { getEventById } from '../api/dummy-data';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next/types';
 import EventSummary from '../../components/event-detail/EventSummary';
 import EventLogistics from '../../components/event-detail/EventLogistics';
 import EventContent from '../../components/event-detail/EventContent';
 import { useGetEvents } from '../../hooks/useRequests';
 import apiConfig from '../api/config';
-import { EventType } from '../api/types';
+// import { EventType } from '../api/types';
+import { getEventById, getEvents } from '../api/helper/api-utils';
 
-const EventDetailedPage = () => {
+const { defaultFilterEventsFunction } = apiConfig;
+
+const EventDetailedPage = (props: any) => {
   const router = useRouter();
   const eventId: any = router.query.eventId;
 
-  const filterEvents = function (event: EventType) {
-    const currentEventId = event?.id ?? -20_000;
-    return currentEventId === eventId;
-  };
+  const staticEvent = props.event;
 
   const { events, loading, error } = useGetEvents(
     `events.json?orderBy="$key"&startAt="${eventId}"&endAt="${eventId}"`,
-    filterEvents
+    defaultFilterEventsFunction
   );
-  //   console.log(events, loading, error);
 
   if (error) {
-    return <h1>Failed to load ...</h1>;
+    return <h1>Failed to load event...</h1>;
   }
 
-  if (loading) {
-    return <h1 className='m-10 font-bold text-pink-600 text-2xl'>Loading ...</h1>;
+  if (!staticEvent && loading) {
+    return <p className='text-center text-4xl'>Loading ... </p>;
   }
 
-  const event = events[0];
+  const fetchedEvent = events[0];
 
-  if (!event) {
+  if (!fetchedEvent && !staticEvent) {
     return <EventSummary title={`No Event Fount with id ${eventId}`} />;
   }
 
+  const event = fetchedEvent ? fetchedEvent : staticEvent;
   return (
     <Fragment>
       <EventSummary title={event.title} />
@@ -46,6 +46,24 @@ const EventDetailedPage = () => {
       </EventContent>
     </Fragment>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const events = await getEvents(undefined);
+
+  const paths = events.map((event) => ({ params: { eventId: event.id } }));
+  const fallback = true;
+  return {
+    paths,
+    fallback,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context: any) => {
+  const eventId = context.params.eventId;
+  return {
+    props: { event: await getEventById(eventId) },
+  };
 };
 
 export default EventDetailedPage;

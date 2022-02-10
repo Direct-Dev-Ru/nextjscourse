@@ -4,6 +4,8 @@ import EventList from '../components/events/EventList';
 import { useGetEvents } from '../hooks/useRequests';
 import apiConfig from './api/config';
 import { EventType } from './api/types';
+import { GetServerSideProps, GetStaticProps } from 'next/types';
+import { getEvents } from './api/helper/api-utils';
 
 const { URL, fetcher } = apiConfig;
 
@@ -11,8 +13,8 @@ function filterFeaturedEvents(event: EventType) {
   return event?.isFeatured ?? false;
 }
 
-export default function HomePage() {
-  const [allEvents, setAllEvents] = useState<EventType[]>([]);
+export default function HomePage(props: any) {
+  const staticEvents: EventType[] = props.featuredEvents;
 
   const { events, error } = useGetEvents('events.json', filterFeaturedEvents);
 
@@ -20,9 +22,11 @@ export default function HomePage() {
     return <h2>Failed to load ...</h2>;
   }
 
-  if (!events || events.length === 0) {
+  if ((!staticEvents || staticEvents.length === 0) && (!events || events.length === 0)) {
     return <h2>No data yet ...</h2>;
   }
+
+  const eventsToRender = events.length === 0 ? staticEvents : events;
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>
@@ -33,8 +37,17 @@ export default function HomePage() {
       </Link>
       <div className='m-5'>
         <h2 className='text-3xl font-bold m-3'>Featured Events: </h2>
-        <EventList items={events} />
+        <EventList items={eventsToRender} />
       </div>
     </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const fetchResult = await getEvents(filterFeaturedEvents);
+  return {
+    props: {
+      featuredEvents: fetchResult,
+    },
+  };
+};
