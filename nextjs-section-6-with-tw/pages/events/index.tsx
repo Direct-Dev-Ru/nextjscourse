@@ -4,41 +4,22 @@ import apiConfig from '../api/config';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import EventsSearch from '../../components/events/EventsSearch';
+import { EventType } from '../api/types';
+import { GetServerSideProps, GetStaticProps } from 'next/types';
+import { getEvents } from '../api/helper/api-utils';
 
-const { URL, fetcher, defaultPath } = apiConfig;
+const { URL, fetcher, defaultPath, defaultFilterEventsFunction } = apiConfig;
 
-const AllEventPage = () => {
-  const [allEvents, setAllEvents] = useState<object[] | undefined>([]);
+const AllEventPage = (props: any) => {
+  const allServerSideEvents: EventType[] = props.allServerSideEvents;
+
+  const [allEvents, setAllEvents] = useState<EventType[] | undefined>(allServerSideEvents);
   const router = useRouter();
 
   const findEventsHandler = (year: any, month: any): void => {
     console.log(year);
     router.push(`/events/${year}/${month}/`);
   };
-
-  const { data, error } = useSWR(URL + defaultPath, fetcher);
-  useEffect(() => {
-    if (data) {
-      const aEvents: any[] = [];
-      for (const key in data) {
-        const element = data[key];
-        aEvents.push({ id: key, ...element });
-      }
-      //   console.log('fire useEffect', aEvents);
-
-      setAllEvents(aEvents);
-    }
-  }, [data]);
-
-  //   // TODO: Refactor to standalone file
-  //   useEffect(() => {
-  //     fetch('/api/eventsdata')
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setAllEvents(data);
-  //         console.log(data);
-  //       });
-  //   }, []);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>
@@ -47,6 +28,20 @@ const AllEventPage = () => {
       <EventList items={allEvents} />
     </div>
   );
+};
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { params } = context;
+  const fetchResult = await getEvents(defaultFilterEventsFunction);
+  //   console.log('req-headers', req.headers);
+  //   console.log('res-headers', res);
+  return {
+    props: {
+      allServerSideEvents: fetchResult,
+    },
+    revalidate: 30,
+  };
 };
 
 export default AllEventPage;

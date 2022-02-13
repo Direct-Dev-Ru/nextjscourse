@@ -52,7 +52,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const events = await getEvents(undefined);
 
   const paths = events.map((event) => ({ params: { eventId: event.id } }));
-  const fallback = true;
+  const fallback = 'blocking';
+
   return {
     paths,
     fallback,
@@ -63,6 +64,7 @@ export const getStaticProps: GetStaticProps = async (context: any) => {
   const eventId = context.params.eventId;
   return {
     props: { event: await getEventById(eventId) },
+    revalidate: 30,
   };
 };
 

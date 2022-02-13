@@ -16,7 +16,9 @@ function filterFeaturedEvents(event: EventType) {
 export default function HomePage(props: any) {
   const staticEvents: EventType[] = props.featuredEvents;
 
-  const { events, error } = useGetEvents('events.json', filterFeaturedEvents);
+  //   const { events, error } = useGetEvents('events.json', filterFeaturedEvents);
+  const events: EventType[] = [];
+  const error = undefined;
 
   if (error) {
     return <h2>Failed to load ...</h2>;
@@ -49,5 +51,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       featuredEvents: fetchResult,
     },
+    revalidate: 30,
   };
 };
