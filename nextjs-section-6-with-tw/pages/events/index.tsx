@@ -7,6 +7,7 @@ import EventsSearch from '../../components/events/EventsSearch';
 import { EventType } from '../api/types';
 import { GetServerSideProps, GetStaticProps } from 'next/types';
 import { getEvents } from '../api/helper/api-utils';
+import HtmlHead from '../../components/layout/HtmlHead';
 
 const { URL, fetcher, defaultPath, defaultFilterEventsFunction } = apiConfig;
 
@@ -18,15 +19,18 @@ const AllEventPage = (props: any) => {
 
   const findEventsHandler = (year: any, month: any): void => {
     console.log(year);
-    router.push(`/events/${year}/${month}/`);
+    router.replace(`/events/${year}/${month}/`);
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen py-2'>
-      <h1 className='text-6xl font-bold'>All Events</h1>
-      <EventsSearch onSearch={findEventsHandler} />
-      <EventList items={allEvents} />
-    </div>
+    <>
+      <HtmlHead title='All Events' />
+      <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+        <h1 className='text-6xl font-bold'>All Events</h1>
+        <EventsSearch onSearch={findEventsHandler} />
+        <EventList items={allEvents} />
+      </div>
+    </>
   );
 };
 

@@ -10,14 +10,13 @@ export default function Layout(props: any) {
   if (router.route === '/tailwind') {
     return <Fragment> {props.children} </Fragment>;
   }
+
   return (
     <Fragment>
-      <HtmlHead />
       <MainHeader />
       <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center'>
         {props.children}
       </main>
-
       <HtmlFooter />
     </Fragment>
   );

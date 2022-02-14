@@ -8,6 +8,7 @@ import { useGetEvents } from '../../hooks/useRequests';
 import apiConfig from '../api/config';
 // import { EventType } from '../api/types';
 import { getEventById, getEvents } from '../api/helper/api-utils';
+import HtmlHead from '../../components/layout/HtmlHead';
 
 const { defaultFilterEventsFunction } = apiConfig;
 
@@ -39,6 +40,7 @@ const EventDetailedPage = (props: any) => {
   const event = fetchedEvent ? fetchedEvent : staticEvent;
   return (
     <Fragment>
+      <HtmlHead title={event.title} />
       <EventSummary title={event.title} />
       <EventLogistics date={event.date} address={event.location} image={event.image} imageAlt={event.title} />
       <EventContent>

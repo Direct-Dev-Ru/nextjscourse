@@ -9,6 +9,7 @@ import { useGetEvents } from '../../hooks/useRequests';
 import { EventType } from '../api/types';
 import { GetServerSideProps } from 'next/types';
 import { getEvents } from '../api/helper/api-utils';
+import HtmlHead from '../../components/layout/HtmlHead';
 
 // client-side data fetching
 const FilteredEventsPageClientSide = () => {
@@ -29,6 +30,7 @@ const FilteredEventsPageClientSide = () => {
   if (isNaN(numYear) || isNaN(numMonth) || numYear < 2000 || numYear > 2030 || numMonth < 1 || numMonth > 12) {
     return (
       <Fragment>
+        <HtmlHead title={`Error filtering events for ${filteredYear} year ${filteredMonth} month`} />
         <ErrorAlert>
           <p className='text-center text-2xl'>Invalid filter. Please adjust your values!!!</p>
         </ErrorAlert>
@@ -53,6 +55,7 @@ const FilteredEventsPageClientSide = () => {
   if (filteredEvents.length === 0 || !filteredEvents) {
     return (
       <Fragment>
+        <HtmlHead title={`No events for ${filteredYear} year ${filteredMonth} month`} />
         <ErrorAlert>
           <p className='text-center text-2xl text-white-300'>No Events. Please change filter values !</p>
         </ErrorAlert>
@@ -66,6 +69,7 @@ const FilteredEventsPageClientSide = () => {
   }
   return (
     <>
+      <HtmlHead title={`Events for ${filteredYear} year ${filteredMonth} month`} />
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
