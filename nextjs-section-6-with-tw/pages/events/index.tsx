@@ -14,19 +14,21 @@ const { URL, fetcher, defaultPath, defaultFilterEventsFunction } = apiConfig;
 const AllEventPage = (props: any) => {
   const allServerSideEvents: EventType[] = props.allServerSideEvents;
 
+  //   props.logga('[allServerSideEvents]:', allServerSideEvents);
+
   const [allEvents, setAllEvents] = useState<EventType[] | undefined>(allServerSideEvents);
   const router = useRouter();
 
   const findEventsHandler = (year: any, month: any): void => {
     console.log(year);
-    router.replace(`/events/${year}/${month}/`);
+    router.push(`/events/${year}/${month}/`);
   };
 
   return (
     <>
       <HtmlHead title='All Events' />
       <div className='flex flex-col items-center justify-center min-h-screen py-2'>
-        <h1 className='text-6xl font-bold'>All Events</h1>
+        <h1 className='text-slate-300 text-6xl font-bold'>All Events</h1>
         <EventsSearch onSearch={findEventsHandler} />
         <EventList items={allEvents} />
       </div>

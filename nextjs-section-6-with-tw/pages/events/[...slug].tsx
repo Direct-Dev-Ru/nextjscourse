@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { Fragment, ReactElement } from 'react';
 import { getFilteredEvents } from '../api/dummy-data';
 import EventList from '../../components/events/EventList';
 import ResultsTitle from '../../components/events/results-title';
@@ -12,13 +12,19 @@ import { getEvents } from '../api/helper/api-utils';
 import HtmlHead from '../../components/layout/HtmlHead';
 
 // client-side data fetching
-const FilteredEventsPageClientSide = () => {
+const FilteredEventsPageClientSide = (props: any) => {
   const router = useRouter();
-
   const filterData = router.query.slug;
 
+  let pageHeadData: ReactElement<any, any>;
+
   if (!filterData) {
-    return <p className='text-center text-4xl'>Loading ... </p>;
+    pageHeadData = <HtmlHead title={`Loading filtering events `} />;
+    return (
+      <>
+        {pageHeadData} <p className='text-center text-4xl'>Loading ... </p>
+      </>
+    );
   }
 
   const [filteredYear, filteredMonth] = filterData;
@@ -28,9 +34,10 @@ const FilteredEventsPageClientSide = () => {
   const date = new Date(numYear, numMonth - 1);
 
   if (isNaN(numYear) || isNaN(numMonth) || numYear < 2000 || numYear > 2030 || numMonth < 1 || numMonth > 12) {
+    pageHeadData = <HtmlHead title={`Error filtering events for ${filteredYear} year ${filteredMonth} month`} />;
     return (
       <Fragment>
-        <HtmlHead title={`Error filtering events for ${filteredYear} year ${filteredMonth} month`} />
+        {pageHeadData}
         <ErrorAlert>
           <p className='text-center text-2xl'>Invalid filter. Please adjust your values!!!</p>
         </ErrorAlert>
@@ -53,9 +60,11 @@ const FilteredEventsPageClientSide = () => {
   const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth });
 
   if (filteredEvents.length === 0 || !filteredEvents) {
+    pageHeadData = <HtmlHead title={`No events for ${filteredYear} year ${filteredMonth} month`} />;
+
     return (
       <Fragment>
-        <HtmlHead title={`No events for ${filteredYear} year ${filteredMonth} month`} />
+        {pageHeadData}
         <ErrorAlert>
           <p className='text-center text-2xl text-white-300'>No Events. Please change filter values !</p>
         </ErrorAlert>
@@ -67,9 +76,12 @@ const FilteredEventsPageClientSide = () => {
       </Fragment>
     );
   }
+
+  pageHeadData = <HtmlHead title={`Events for ${filteredYear} year ${filteredMonth} month`} />;
+
   return (
     <>
-      <HtmlHead title={`Events for ${filteredYear} year ${filteredMonth} month`} />
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
