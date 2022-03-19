@@ -1,0 +1,15 @@
+$color-bg: #f70928;
+$color-fg: #e1dee7;
+
+.alert {
+    margin: 1rem auto;
+    padding: 1rem 2rem;
+    width: 90%;
+    max-width: 40rem;
+    background-color: $color-bg;
+    color: $color-fg;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 6px;
+}

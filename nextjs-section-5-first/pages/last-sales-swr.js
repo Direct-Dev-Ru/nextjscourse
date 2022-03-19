@@ -5,22 +5,23 @@ import useSWR from 'swr';
 import classes from './last-sales.module.css';
 
 // useSWR(<request-url>, (url) => fetch(url).then(res => res.json()))
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const LastSalesPage = (props) => {
   const [sales, setSales] = useState(props.sales);
   const URL = `https://test-project-eab59-default-rtdb.firebaseio.com/sales.json`;
 
-  const { data, error } = useSWR(URL, (url) => fetch(url).then((res) => res.json()));
+  const { data, error } = useSWR(URL, fetcher);
 
   useEffect(() => {
-    console.log('fire useEffect');
+    // console.log('fire useEffect');
     if (data) {
       const aSales = [];
       for (const key in data) {
         const element = data[key];
         aSales.push({ id: key, username: element.username, volume: element.volume });
       }
-      console.log('fire useEffect', aSales);
+      //   console.log('fire useEffect', aSales);
 
       setSales(aSales);
     }
@@ -55,6 +56,7 @@ const LastSalesPage = (props) => {
   );
 };
 
+// Here we cant use react hooks - this is not a react part
 export const getStaticProps = async (ctx) => {
   const { params } = ctx;
 
@@ -68,7 +70,8 @@ export const getStaticProps = async (ctx) => {
     aSales.push({ id: key, username: element.username, volume: element.volume });
   }
 
-  return { props: { sales: aSales, revalidate: 10, params: params ? params : null } };
+  return { props: { sales: aSales } };
+  //   return { props: { sales: aSales, revalidate: 10, params: params ? params : null } };
 };
 
 export default LastSalesPage;
