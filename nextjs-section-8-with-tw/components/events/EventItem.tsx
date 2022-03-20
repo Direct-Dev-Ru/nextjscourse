@@ -15,6 +15,7 @@ function EventItem(props: any) {
   const formattedAddress = location.replace(', ', '\n');
 
   const exploreLink = `/events/${id}`;
+  const exploreFeedback = `/feedback/${id}`;
 
   const twVariant = (
     <div className='my-2 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl'>
@@ -44,6 +45,14 @@ function EventItem(props: any) {
           <div className={`${classes.actions} mt-20`}>
             <Button link={exploreLink}>
               <span> Explore This Event</span>
+              <span className={classes.icon}>
+                <ArrowRightIcon />
+              </span>
+            </Button>
+          </div>
+          <div className={`${classes.actions}`}>
+            <Button link={exploreFeedback}>
+              <span> Explore Feedbacks</span>
               <span className={classes.icon}>
                 <ArrowRightIcon />
               </span>

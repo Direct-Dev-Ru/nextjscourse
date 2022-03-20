@@ -8,4 +8,11 @@ export type EventType = {
   isFeatured: boolean;
 };
 
+export type FeedbackType = {
+  id: string;
+  eventId: string;
+  email: string;
+  text: string;
+};
+
 export type FilterFn = (e: EventType) => boolean;

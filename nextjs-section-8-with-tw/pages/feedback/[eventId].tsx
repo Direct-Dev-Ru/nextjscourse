@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { appConfig } from '../../config/config';
 import { useRouter } from 'next/router';
-import { EventType } from '../../types/types';
+import { EventType, FeedbackType } from '../../types/types';
 import { getEvents, getEventById } from '../../helper/api-utils';
 import HtmlHead from '../../components/layout/HtmlHead';
 
@@ -16,10 +16,49 @@ const dummyEvent = {
 };
 
 const { URL, fetcher, defaultPath, defaultFilterEventsFunction } = appConfig;
+
 const FeedbackPage = (props: any) => {
   const router = useRouter();
   const eventId: any = (router?.query?.eventId ?? '0') === 'default' ? '0' : router?.query?.eventId ?? '0';
   const [event, setEvent] = useState<EventType | undefined>();
+  const [feedbackItems, setFeedbackItems] = useState<FeedbackType[] | undefined>([]);
+
+  const email = useRef<HTMLInputElement>(null);
+  const message = useRef<HTMLInputElement>(null);
+
+  // Handler for send submit button click event
+  const onSendSubmitHandler = async (e: any) => {
+    const emailValue = email?.current?.value ?? '';
+    const messageValue = message?.current?.value ?? '';
+    if (!emailValue || !messageValue) {
+      alert('All fields should be filled');
+      return;
+    }
+    // now we are ready to send feedback to api
+    const reqBody = { eventId: eventId, email: emailValue, text: messageValue };
+    const response = await fetch('/api/feedback', {
+      method: 'POST',
+      body: JSON.stringify(reqBody),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+
+    console.log(data);
+  };
+
+  const onShowAllFeedbackHandler = async (e: any) => {
+    const response = await fetch(`/api/feedback?eventId=${eventId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    setFeedbackItems(data?.payload?.data ?? []);
+    console.log(data?.payload?.data ?? []);
+  };
 
   useEffect(() => {
     let isApiSubscribed = true;
@@ -43,15 +82,23 @@ const FeedbackPage = (props: any) => {
     return returnFunction;
   }, [eventId]);
 
+  const feedbackListItems = (
+    <ul>
+      {feedbackItems?.map((item) => {
+        return <li>{`${item.text}(${item.email})`}</li>;
+      })}
+    </ul>
+  );
+
   const head = <HtmlHead title={`Your Feedback for ${event?.title ?? 'hbz'}`} />;
-  const mapSrc = `https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=%C4%B0zmir+(My%20Business%20Name)&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed`;
+  const mapSrc = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d293026.2204507333!2d73.07527064879928!3d54.985946464649025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x43aafde2f601090b%3A0x5eefc33861a69b1a!2sOmsk%2C%20Omsk%20Oblast!5e0!3m2!1sen!2sru!4v1645330663477!5m2!1sen!2sru`;
   return (
     <>
       {head}
       <section className='text-gray-600 body-font relative w-full'>
         <div className='absolute inset-0 bg-gray-300'>
           <iframe
-            src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d293026.2204507333!2d73.07527064879928!3d54.985946464649025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x43aafde2f601090b%3A0x5eefc33861a69b1a!2sOmsk%2C%20Omsk%20Oblast!5e0!3m2!1sen!2sru!4v1645330663477!5m2!1sen!2sru'
+            src={mapSrc}
             width='100%'
             height='100%'
             title='map'
@@ -70,6 +117,7 @@ const FeedbackPage = (props: any) => {
               </label>
               <input
                 type='email'
+                ref={email}
                 id='email'
                 name='email'
                 className='w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out'
@@ -82,15 +130,28 @@ const FeedbackPage = (props: any) => {
               <textarea
                 id='message'
                 name='message'
+                ref={message}
                 className='w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out'
               />
             </div>
-            <button className='text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg'>
+            <button
+              onClick={onSendSubmitHandler}
+              name='submit-button'
+              className='text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg'
+            >
               Send feedback
             </button>
             <p className='text-xs text-gray-500 mt-3'>
               Your feedbacks very important for us. Its help make things better.
             </p>
+            <button
+              onClick={onShowAllFeedbackHandler}
+              name='show-feedback-button'
+              className='mt-2 text-white bg-slate-400 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg'
+            >
+              Show all feedbacks
+            </button>
+            <div className='mt-4'>{feedbackListItems}</div>
           </div>
         </div>
       </section>
