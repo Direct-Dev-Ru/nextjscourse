@@ -83,11 +83,11 @@ const FeedbackPage = (props: any) => {
   }, [eventId]);
 
   const feedbackListItems = (
-    <ul>
+    <ol type='1' style={{ listStyle: 'auto' }}>
       {feedbackItems?.map((item) => {
-        return <li>{`${item.text}(${item.email})`}</li>;
+        return <li className='text-left'>{`${item.text} (${item.email})`}</li>;
       })}
-    </ul>
+    </ol>
   );
 
   const head = <HtmlHead title={`Your Feedback for ${event?.title ?? 'hbz'}`} />;

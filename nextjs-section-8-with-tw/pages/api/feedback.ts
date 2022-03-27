@@ -4,9 +4,23 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // import { getEvents, getEventById } from '../../helper/localDb';
 // import { EventType } from '../../types/types';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  const dbPath = path.join(process.cwd(), 'db', 'feedback-data.json');
+export const dbPath = path.join(process.cwd(), 'db', 'feedback-data.json');
 
+export function dbPathBuild(fileName: string | undefined) {
+  if (!fileName) {
+    return dbPath;
+  }
+
+  return path.join(process.cwd(), 'db', fileName);
+}
+
+export const readFeedbackData = (dbPath: any) => {
+  const fileData = readFileSync(dbPath, 'utf8');
+  const data = JSON.parse(fileData);
+  return data;
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   //   console.log(req.query, req.method);
   if (req.method === 'POST') {
     const { email, text, eventId } = req.body;
@@ -19,8 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const filePath = dbPath;
     try {
-      const fileData = readFileSync(filePath, 'utf8');
-      const data = JSON.parse(fileData);
+      //   const fileData = readFileSync(filePath, 'utf8');
+      //   const data = JSON.parse(fileData);
+      const data = readFeedbackData(filePath);
       data.push(newFeedback);
       fs.writeFileSync(filePath, JSON.stringify(data));
 
