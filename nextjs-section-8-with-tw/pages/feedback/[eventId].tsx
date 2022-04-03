@@ -45,7 +45,7 @@ const FeedbackPage = (props: any) => {
     });
     const data = await response.json();
 
-    console.log(data);
+    // console.log(data);
   };
 
   const onShowAllFeedbackHandler = async (e: any) => {
@@ -57,7 +57,7 @@ const FeedbackPage = (props: any) => {
     });
     const data = await response.json();
     setFeedbackItems(data?.payload?.data ?? []);
-    console.log(data?.payload?.data ?? []);
+    // console.log(data?.payload?.data ?? []);
   };
 
   useEffect(() => {

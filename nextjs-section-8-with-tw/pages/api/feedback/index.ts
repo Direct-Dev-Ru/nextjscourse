@@ -50,7 +50,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   if (req.method === 'GET') {
     const filePath = dbPath;
-    const { eventId } = req.query ?? { eventId: '0' };
+    const eventId = req?.query?.eventId ?? '0';
+
     try {
       const fileData = readFileSync(filePath, 'utf8');
       const data = JSON.parse(fileData);

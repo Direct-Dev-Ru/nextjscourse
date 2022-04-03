@@ -67,4 +67,4 @@ function convertToFirebaseObject(arrayToConvert) {
   return result;
 }
 
-console.log(JSON.stringify(convertToFirebaseObject(getAllEvents()), null, 2));
+// console.log(JSON.stringify(convertToFirebaseObject(getAllEvents()), null, 2));

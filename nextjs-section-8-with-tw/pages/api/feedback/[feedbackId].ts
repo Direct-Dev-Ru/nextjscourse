@@ -2,7 +2,7 @@ import fs, { readFileSync } from 'fs';
 import path from 'path';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { dbPathBuild, readFeedbackData } from '../feedback';
+import { dbPathBuild, readFeedbackData } from '.';
 // import { getEvents, getEventById } from '../../helper/localDb';
 // import { EventType } from '../../types/types';
 
@@ -12,7 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const feedbackId: string | string[] = req?.query?.feedbackId ?? '0';
     const dbFilePath = dbPathBuild(undefined);
     const feedbackData = readFeedbackData(dbFilePath);
+    // console.log(feedbackData);
     const selectedFeedback = feedbackData.find((feedback: any) => feedback.id === feedbackId);
+    // console.log(selectedFeedback);
     if (req.method === '#POST') {
       // ...
     }

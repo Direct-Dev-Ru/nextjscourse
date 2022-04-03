@@ -29,13 +29,15 @@ const PreFeedbackPage = (props: any) => {
   const [feedbackData, setFeedBackData] = useState<FeedbackType | undefined>();
 
   function loadFeedbackHandler(id: any) {
+    console.log('id is = ', id);
     if (id === 'hide') {
       setFeedBackData(undefined);
       return;
     }
-    fetch(`/api/feedbacks/${id}`)
+    fetch(`/api/feedback/${id}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.payload.data);
         setFeedBackData(data.payload.data);
       });
   }
@@ -44,7 +46,7 @@ const PreFeedbackPage = (props: any) => {
     <ol type='1' style={{ listStyle: 'auto' }}>
       {feedbackItems?.map((item) => {
         return (
-          <li className='text-left'>
+          <li key={item.id} className='text-left'>
             {feedbackData?.id === item.id && (
               <div>
                 <p>email: {item.email}</p>
@@ -56,9 +58,9 @@ const PreFeedbackPage = (props: any) => {
               </div>
             )}
             {`${item.text}`}
-            <div>
+            <div className='my-3 '>
               <button
-                className='text-blue-500'
+                className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
                 onClick={loadFeedbackHandler.bind(null, feedbackData?.id !== item.id ? item.id : 'hide')}
               >
                 {feedbackData?.id !== item.id ? 'Show Details About Feedback' : 'Hide Details About Feedback'}
