@@ -6,7 +6,7 @@ import EventLogistics from '../../components/event-detail/EventLogistics';
 import EventContent from '../../components/event-detail/EventContent';
 import { useGetEvents } from '../../hooks/useRequests';
 import apiConfig from '../../config/config';
-// import { EventType } from '../api/types';
+import Comments from '../../components/input/comments';
 import { getEventById, getEvents } from '../../helper/api-utils';
 import HtmlHead from '../../components/layout/HtmlHead';
 
@@ -43,6 +43,7 @@ const EventDetailedPage = (props: any) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </Fragment>
   );
 };

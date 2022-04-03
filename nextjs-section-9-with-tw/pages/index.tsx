@@ -7,7 +7,7 @@ import { getEvents } from '../helper/api-utils';
 import HtmlHead from '../components/layout/HtmlHead';
 import Image from 'next/image';
 import backPic from '../public/images/back-1.png';
-
+import NewsletterRegistration from '../components/input/newsletter-registration';
 const { URL, fetcher } = appConfig;
 
 function filterFeaturedEvents(event: EventType) {
@@ -44,7 +44,10 @@ export default function HomePage(props: any) {
           {/* <Image width={840} height={540} src={'/images/back-1.png'} /> */}
           {/* <Image width={840} height={540} src={backPic} /> */}
         </div>
-        <div className='m-5'>
+        <div>
+          <NewsletterRegistration />
+        </div>
+        <div className='m-1'>
           <h2 className='text-slate-300 text-3xl font-bold m-3'>Featured Events: </h2>
           <EventList items={eventsToRender} />
         </div>

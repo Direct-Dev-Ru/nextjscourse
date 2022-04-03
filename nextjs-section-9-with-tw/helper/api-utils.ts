@@ -1,5 +1,8 @@
 import apiConfig, { appConfig } from '../config/config';
 import { EventType, FilterFn } from '../types/types';
+import fs, { readFileSync } from 'fs';
+import path from 'path';
+
 const { URL: baseURL, defaultPath, defaultFilterEventsFunction } = appConfig;
 
 export async function getEvents(filterFunction: FilterFn | undefined, signal: AbortSignal | undefined) {
@@ -25,12 +28,15 @@ export async function getEventById(id: string, signal: AbortSignal | undefined) 
   return data?.payload?.event ?? undefined;
 }
 
-// export async function getEventByIdOld(id: string) {
-//   const events = await getEvents(defaultFilterEventsFunction);
+export function dbPathBuild(fileName: string | undefined) {
+  if (!fileName) {
+    return path.join(process.cwd(), 'db', 'default-data.json');
+  }
+  return path.join(process.cwd(), 'db', fileName);
+}
 
-//   if (events && events.length > 0) {
-//     return events[0];
-//   }
-
-//   return;
-// }
+export const readDbFileData = (dbPath: any) => {
+  const fileData = readFileSync(dbPath, 'utf8');
+  const data = JSON.parse(fileData);
+  return data;
+};
