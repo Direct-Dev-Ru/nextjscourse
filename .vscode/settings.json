@@ -6,8 +6,11 @@
     "Nextjs-Section-3/": true,
     "Nextjs-Section-3/node_modules/": true,
     "nextjs-sec3-with-tailwindcss/": true,
-    "nextjs-section-4-with-tw/": false,
-    "nextjs_express/": false
+    "nextjs-section-4-with-tw/": true,
+    "nextjs-section-6-with-tw/": true,
+    "nextjs-section-8-with-tw/": true,
+    "nextjs-section-5-first/": true,
+    "nextjs_express/": true
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#286b78",
@@ -27,6 +30,6 @@
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveBackground": "#1b495299",
     "titleBar.inactiveForeground": "#e7e7e799"
-},
+  },
   "peacock.color": "#1b4952"
 }

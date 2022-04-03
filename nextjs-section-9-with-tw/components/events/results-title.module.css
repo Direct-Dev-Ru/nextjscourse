@@ -1,0 +1,11 @@
+.title {
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 40rem;
+    text-align: center;
+}
+
+.title h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem
+}
