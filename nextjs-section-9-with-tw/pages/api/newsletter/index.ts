@@ -15,13 +15,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         .json({ error: true, status: '422', message: 'validation error', payload: { email: userEmail } });
     }
 
-    const newSubscribtion = {
-      id: new Date().toISOString(),
-      userEmail,
-    };
-
     try {
-      const data = readDbFileData(dbPathNewsletter);
+      const { data } = readDbFileData(dbPathNewsletter);
+
+      // check for duplication
+      const findItem = data.find((dataItem: any) => dataItem?.email === userEmail);
+      console.log(data, findItem);
+      if (findItem) {
+        return res
+          .status(422)
+          .json({ error: true, status: '422', message: 'duplicate subscription', payload: { email: userEmail } });
+      }
+
+      const newSubscribtion = {
+        id: new Date().toISOString(),
+        email: userEmail,
+      };
       data.push(newSubscribtion);
       fs.writeFileSync(dbPathNewsletter, JSON.stringify(data));
 

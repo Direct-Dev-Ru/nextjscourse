@@ -37,6 +37,9 @@ export function dbPathBuild(fileName: string | undefined) {
 
 export const readDbFileData = (dbPath: any) => {
   const fileData = readFileSync(dbPath, 'utf8');
-  const data = JSON.parse(fileData);
-  return data;
+  let data = JSON.parse(fileData);
+  if (!data) {
+    return {};
+  }
+  return { data };
 };

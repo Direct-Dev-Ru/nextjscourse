@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import EventList from '../components/events/EventList';
 import { appConfig } from '../config/config';
 import { EventType } from '../types/types';
@@ -8,6 +9,7 @@ import HtmlHead from '../components/layout/HtmlHead';
 import Image from 'next/image';
 import backPic from '../public/images/back-1.png';
 import NewsletterRegistration from '../components/input/newsletter-registration';
+import ErrorAlert from '../components/ui/Alert/ErrorAlert';
 const { URL, fetcher } = appConfig;
 
 function filterFeaturedEvents(event: EventType) {
@@ -17,13 +19,19 @@ function filterFeaturedEvents(event: EventType) {
 export default function HomePage(props: any) {
   const staticEvents: EventType[] = props.featuredEvents;
 
-  //   const { events, error } = useGetEvents('events.json', filterFeaturedEvents);
   const events: EventType[] = [];
-  const error = undefined;
+  const [error, setError] = useState({ isError: false, errorTitle: 'Error Is Empty', errorMessage: '' });
 
-  if (error) {
-    return <h2>Failed to load ...</h2>;
-  }
+  const { isError, errorTitle, errorMessage } = error;
+  const errorArea = isError && (
+    <div style={{ minWidth: '70%' }}>
+      <ErrorAlert
+        title={errorTitle}
+        error={errorMessage}
+        onClickHandler={() => setError((prevState) => ({ ...prevState, isError: false }))}
+      />
+    </div>
+  );
 
   if ((!staticEvents || staticEvents.length === 0) && (!events || events.length === 0)) {
     return <h2>No data yet ...</h2>;
@@ -44,8 +52,9 @@ export default function HomePage(props: any) {
           {/* <Image width={840} height={540} src={'/images/back-1.png'} /> */}
           {/* <Image width={840} height={540} src={backPic} /> */}
         </div>
+        {errorArea}
         <div>
-          <NewsletterRegistration />
+          <NewsletterRegistration setError={setError} />
         </div>
         <div className='m-1'>
           <h2 className='text-slate-300 text-3xl font-bold m-3'>Featured Events: </h2>
@@ -57,7 +66,7 @@ export default function HomePage(props: any) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const fetchResult = await getEvents(filterFeaturedEvents);
+  const fetchResult = await getEvents(filterFeaturedEvents, undefined);
   return {
     props: {
       featuredEvents: fetchResult,
