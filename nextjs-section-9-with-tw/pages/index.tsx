@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EventList from '../components/events/EventList';
 import { appConfig } from '../config/config';
 import { EventType } from '../types/types';
@@ -16,13 +16,26 @@ function filterFeaturedEvents(event: EventType) {
   return event?.isFeatured ?? false;
 }
 
+const emptyErrorObject = { isError: false, errorTitle: 'Error Is Empty', errorMessage: '' };
+const delay = 10;
 export default function HomePage(props: any) {
   const staticEvents: EventType[] = props.featuredEvents;
 
   const events: EventType[] = [];
-  const [error, setError] = useState({ isError: false, errorTitle: 'Error Is Empty', errorMessage: '' });
 
+  //   error visualization
+  const [error, setError] = useState(emptyErrorObject);
   const { isError, errorTitle, errorMessage } = error;
+
+  useEffect(() => {
+    if (isError) {
+      let timer1 = setTimeout(() => setError(emptyErrorObject), delay * 1000);
+      return () => {
+        clearTimeout(timer1);
+      };
+    }
+  }, [isError]);
+
   const errorArea = isError && (
     <div style={{ minWidth: '70%' }}>
       <ErrorAlert
@@ -32,6 +45,8 @@ export default function HomePage(props: any) {
       />
     </div>
   );
+
+  // end of error processing
 
   if ((!staticEvents || staticEvents.length === 0) && (!events || events.length === 0)) {
     return <h2>No data yet ...</h2>;

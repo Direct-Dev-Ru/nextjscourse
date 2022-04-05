@@ -30,6 +30,7 @@ function NewsletterRegistration(props) {
         if (setError) {
           setError((prevState) => ({ ...prevState, errorTitle: data.message, isError: true }));
         }
+        emailInputRef.current.focus();
         return;
       }
 
