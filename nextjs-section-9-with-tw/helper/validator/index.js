@@ -13,9 +13,23 @@ const validatePhone = (phone) => {
   return validateSomething(phone, rexp);
 };
 
+const validateName = (name) => {
+  const rexp = /[A-Za-zА-Яа-яЁё]{3,}/;
+  return validateSomething(name, rexp);
+};
+
+const validateCustom = (custom, rexp) => {
+  if (!rexp) {
+    return false;
+  }
+  return validateSomething(custom, rexp);
+};
+
 const caseObject = {
   email: validateEmail,
   phone: validatePhone,
+  name: validateName,
+  custom: validateCustom,
 };
 
 export const validator = (validatorType, ...rest) => {

@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       // check for duplication
       const findItem = data.find((dataItem: any) => dataItem?.email === userEmail);
-      console.log(data, findItem);
+
       if (findItem) {
         return res
           .status(422)
