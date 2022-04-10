@@ -25,16 +25,31 @@ const validateCustom = (custom, rexp) => {
   return validateSomething(custom, rexp);
 };
 
+const validateEmpty = (data) => {
+  return data.trim() !== '';
+};
+
 const caseObject = {
   email: validateEmail,
   phone: validatePhone,
   name: validateName,
   custom: validateCustom,
+  empty: validateEmpty,
 };
 
-export const validator = (validatorType, ...rest) => {
-  //   console.log(validatorType);
-  //   console.log(rest);
-  //   console.dir(caseObject[validatorType]);
+const validator = (validatorType, ...rest) => {
   return caseObject[validatorType](...rest);
 };
+
+const validatorChain = (validatorArray, ...rest) => {
+  if (Array.isArray(validatorArray)) {
+    return validatorArray.reduce((prev, current) => {
+      return prev && caseObject[current](...rest) ? true : false;
+    }, true);
+  }
+  return caseObject[validatorArray](...rest);
+};
+
+// console.log(validatorChain(['name', 'custom'], '<script>Alert("i am running")</script>', /(<([^>]+)>)/gi));
+
+export { validator, validatorChain };
