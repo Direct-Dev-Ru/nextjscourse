@@ -52,7 +52,9 @@ function NewComment(props) {
         <textarea id='comment' rows='5' ref={commentInputRef}></textarea>
       </div>
       {isInvalid && <p>Please enter a valid email address and comment!</p>}
-      <button>Submit</button>
+      <button className={classes.button} onClick={sendCommentHandler}>
+        Submit
+      </button>
     </form>
   );
 }
