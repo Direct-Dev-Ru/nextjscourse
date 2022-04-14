@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { validator } from '../../../helper/validator';
 import classes from './new-comment.module.css';
 
 function NewComment(props) {
@@ -16,13 +17,12 @@ function NewComment(props) {
     const enteredComment = commentInputRef.current.value;
 
     if (
-      !enteredEmail ||
-      enteredEmail.trim() === '' ||
-      !enteredEmail.includes('@') ||
-      !enteredName ||
-      enteredName.trim() === '' ||
-      !enteredComment ||
-      enteredComment.trim() === ''
+      !(
+        validator('email', enteredEmail) &&
+        validator('name', enteredName) &&
+        validator('custom', enteredComment, /(<([^>]+)>)/gi) &&
+        validator('empty', text)
+      )
     ) {
       setIsInvalid(true);
       return;
