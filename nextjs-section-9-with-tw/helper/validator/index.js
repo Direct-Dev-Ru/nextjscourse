@@ -1,10 +1,13 @@
 const validateSomething = (str, regexp) => {
-  return String(str).toLowerCase().match(regexp);
+  const resultMatch = String(str).toLowerCase().match(regexp);
+
+  return resultMatch ? resultMatch : false;
 };
 
 const validateEmail = (email) => {
-  const rexp =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //   const rexp =
+  //     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const rexp = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
   return validateSomething(email, rexp);
 };
 

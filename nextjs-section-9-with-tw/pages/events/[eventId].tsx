@@ -9,6 +9,7 @@ import apiConfig from '../../config/config';
 import Comments from '../../components/input/comments';
 import { getEventById, getEvents } from '../../helper/api-utils';
 import HtmlHead from '../../components/layout/HtmlHead';
+import { logga } from '../../helper/loging/logga';
 
 const { defaultFilterEventsFunction } = apiConfig;
 
@@ -28,7 +29,7 @@ const EventDetailedPage = (props: any) => {
     return <p className='text-center text-4xl'>Loading ... </p>;
   }
 
-  const fetchedEvent = events[0];
+  const fetchedEvent = events.find((event) => event.id === eventId);
 
   if (!fetchedEvent && !staticEvent) {
     return <EventSummary title={`No Event Fount with id ${eventId}`} />;

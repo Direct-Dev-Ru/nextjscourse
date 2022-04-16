@@ -29,7 +29,7 @@ const PreFeedbackPage = (props: any) => {
   const [feedbackData, setFeedBackData] = useState<FeedbackType | undefined>();
 
   function loadFeedbackHandler(id: any) {
-    console.log('id is = ', id);
+    // console.log('id is = ', id);
     if (id === 'hide') {
       setFeedBackData(undefined);
       return;
@@ -37,7 +37,7 @@ const PreFeedbackPage = (props: any) => {
     fetch(`/api/feedback/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.payload.data);
+        // console.log(data.payload.data);
         setFeedBackData(data.payload.data);
       });
   }

@@ -4,7 +4,7 @@ import { getEvents, getEventById } from '../../helper/localDb';
 import { EventType } from '../../types/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  console.log(req.query, req.method);
+  //   console.log(req.query, req.method);
   if (req.method === 'GET') {
     const eventId: string = (req.query?.eventId ?? '0') as 'string';
     const event: EventType = (await getEventById(eventId)) as EventType;

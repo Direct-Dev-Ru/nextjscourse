@@ -6,16 +6,7 @@ import MainHeader from './MainHeader';
 import React from 'react';
 import apiConfig from '../../config/config';
 
-const isDev: boolean = process.env.NODE_ENV === 'development';
-
-const logga: (message: string, ...restMessages: any[]) => void = function (message: string, ...restMessages: any[]) {
-  if (isDev) {
-    console.log(message);
-    for (const mes of restMessages) {
-      console.log(mes);
-    }
-  }
-};
+import { isDev, logga } from 'helper/loging/logga';
 
 const ParentLayout: FunctionComponent<any> = ({ children }) => {
   const routerMain = useRouter();

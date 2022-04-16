@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
     "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/helper/*": ["helper/*"],
+      "@/api/*": ["pages/api/*"],
+      "@/pages/*": ["pages/*"],
+      "@/hooks/*": ["hooks/*"]
+    },
     "declaration": true,
     "typeRoots": [
       /* List of folders to include type definitions from. */

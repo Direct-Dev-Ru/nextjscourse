@@ -1,40 +1,56 @@
 import { useRef, useState } from 'react';
-import { validator } from '../../../helper/validator';
+import { validator } from '../../helper/validator';
 import classes from './new-comment.module.css';
+import { logga } from '@/helper/loging/logga';
 
 function NewComment(props) {
-  const [isInvalid, setIsInvalid] = useState(false);
+  const [info, setInfo] = useState({
+    isShow: false,
+    isInvalid: false,
+    message: 'Please enter valid values into fields',
+  });
 
   const emailInputRef = useRef();
   const nameInputRef = useRef();
   const commentInputRef = useRef();
 
-  function sendCommentHandler(event) {
+  //   Handler press button Submit
+  const sendCommentHandler = (event) => {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredName = nameInputRef.current.value;
     const enteredComment = commentInputRef.current.value;
 
+    // logga(validator('email', enteredEmail));
+    // logga(validator('name', enteredName));
+    // logga(validator('custom', enteredComment, /(<([^>]+)>)/gi));
+    // logga(validator('empty', enteredComment));
     if (
       !(
         validator('email', enteredEmail) &&
         validator('name', enteredName) &&
-        validator('custom', enteredComment, /(<([^>]+)>)/gi) &&
-        validator('empty', text)
+        !validator('custom', enteredComment, /(<([^>]+)>)/gi) &&
+        validator('empty', enteredComment)
       )
     ) {
-      setIsInvalid(true);
+      setInfo((prev) => ({ isShow: true, isInvalid: true, message: 'Please enter valid values into fields' }));
       return;
     }
+    setInfo((prev) => ({ isShow: false, isInvalid: false, message: '' }));
 
-    props.onAddComment({
-      email: enteredEmail,
-      name: enteredName,
-      text: enteredComment,
-    });
-  }
+    props.onAddComment(
+      {
+        email: enteredEmail,
+        name: enteredName,
+        text: enteredComment,
+      },
+      setInfo
+    );
+  };
 
+  const { isShow, isInvalid, message } = info;
+  //   logga(isShow, isInvalid, message);
   return (
     <form className={classes.form}>
       <div className={classes.row}>
@@ -51,7 +67,7 @@ function NewComment(props) {
         <label htmlFor='comment'>Your comment</label>
         <textarea id='comment' rows='5' ref={commentInputRef}></textarea>
       </div>
-      {isInvalid && <p>Please enter a valid email address and comment!</p>}
+      {isShow && <p className={isInvalid ? 'text-red-600' : 'text-yellow-300'}>{message}</p>}
       <button className={classes.button} onClick={sendCommentHandler}>
         Submit
       </button>

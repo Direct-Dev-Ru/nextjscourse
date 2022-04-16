@@ -20,7 +20,7 @@ const AllEventPage = (props: any) => {
   const router = useRouter();
 
   const findEventsHandler = (year: any, month: any): void => {
-    console.log(year);
+    // console.log(year);
     router.push(`/events/${year}/${month}/`);
   };
 
@@ -39,9 +39,8 @@ const AllEventPage = (props: any) => {
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { params } = context;
-  const fetchResult = await getEvents(defaultFilterEventsFunction);
-  //   console.log('req-headers', req.headers);
-  //   console.log('res-headers', res);
+  const fetchResult = await getEvents(defaultFilterEventsFunction, undefined);
+
   return {
     props: {
       allServerSideEvents: fetchResult,

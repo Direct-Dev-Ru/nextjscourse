@@ -55,7 +55,7 @@ const FilteredEventsPageClientSide = (props: any) => {
 
   const { events, loading, error } = useGetEvents(`events.json`, filterEvents);
 
-  console.log(events, loading, error);
+  //   console.log(events, loading, error);
 
   const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth });
 
