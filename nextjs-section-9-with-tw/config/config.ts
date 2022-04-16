@@ -5,6 +5,7 @@ interface initConfiguration {
 export class AppConfig {
   private static instance: AppConfig;
   protected __baseURL: string;
+  protected __mongoDbURI: string;
   protected __defaultPath: string;
   protected __fetcher = (url: string) => fetch(url).then((res) => res.json());
   protected __defaultFilterEventsFunction = (e: any | undefined) => true;
@@ -12,6 +13,9 @@ export class AppConfig {
   private constructor(initial: initConfiguration) {
     this.__baseURL = initial?.baseURL ?? 'http://localhost:3000/api/';
     this.__defaultPath = initial?.defaultPath ?? '';
+    this.__mongoDbURI =
+      initial?.defaultMongoDbURI ??
+      'mongodb://defaultuser:defaultpassword@localhost:27017/?authSource=admin&replicaSet=rs0&ssl=false';
   }
 
   static getInstance(initial: initConfiguration) {
@@ -37,6 +41,14 @@ export class AppConfig {
   public set URL(v: string) {
     this.__baseURL = v;
   }
+
+  public get mongoDbURI(): string {
+    return this.__mongoDbURI;
+  }
+  public set mongoDbURI(v: string) {
+    this.__mongoDbURI = v;
+  }
+
   public get defaultPath(): string {
     return this.__defaultPath;
   }
@@ -56,6 +68,10 @@ const apiConfig = {
   defaultFilterEventsFunction: (e: any | undefined) => true,
 };
 
-export const appConfig = AppConfig.getInstance({ baseURL: 'http://localhost:3000/api/', defaultPath: 'events' });
+export const appConfig = AppConfig.getInstance({
+  baseURL: 'http://localhost:3000/api/',
+  defaultPath: 'events',
+  defaultMongoDbURI: `mongodb://fl61user:U%24eRrP%40%24%24w0rd20o2o224@mongo-db:27017/fl61?authSource=fl61&replicaSet=rs0&readPreference=primary&ssl=false`,
+});
 
 export default apiConfig;

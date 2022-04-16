@@ -4,7 +4,7 @@ import classes from './MainHeader.module.css';
 const MainHeader = () => (
   <header className={classes.header}>
     <div className={classes.logo}>
-      <Link href='/'>NextEvents - (sec.8)</Link>
+      <Link href='/'>NextEvents - (sec.9)</Link>
     </div>
     <nav className={classes.navigation}>
       <ul>

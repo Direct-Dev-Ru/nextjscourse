@@ -1,9 +1,17 @@
 import fs, { readFileSync } from 'fs';
-import path from 'path';
+// import path from 'path';
+import { MongoClient } from 'mongodb';
+import { appConfig } from '@/config/config';
+import { logga } from '@/helper/loging/logga';
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { dbPathBuild, readDbFileData } from '../../../helper/api-utils';
 import { validator } from '../../../helper/validator';
 const dbPathNewsletter = dbPathBuild('newsletter-data.json');
+
+// Connection URI
+const { mongoDbURI } = appConfig;
+// const uri = 'mongodb+srv://sample-hostname:27017/?maxPoolSize=20&w=majority';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   if (req.method === 'POST') {
@@ -14,7 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         .status(422)
         .json({ error: true, status: '422', message: 'validation error', payload: { email: userEmail } });
     }
-
+    // Create a new MongoClient
+    const client = new MongoClient(mongoDbURI);
     try {
       const { data } = readDbFileData(dbPathNewsletter);
 
@@ -27,23 +36,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           .json({ error: true, status: '422', message: 'duplicate subscription', payload: { email: userEmail } });
       }
 
-      const newSubscribtion = {
+      const newSubscription = {
         id: new Date().toISOString(),
         email: userEmail,
       };
-      data.push(newSubscribtion);
+      data.push(newSubscription);
       fs.writeFileSync(dbPathNewsletter, JSON.stringify(data));
+
+      // Connect the client to the server
+      await client.connect();
+      // Establish and verify connection
+      await client.db().command({ ping: 1 });
+      logga('Connected successfully to mongodb');
+
+      await client.db().collection('emails-subscriptions').insertOne(newSubscription);
 
       return res.status(201).json({
         error: false,
         status: '201',
         message: 'Successfully added newsletter subscribtion',
-        payload: { newSubscribtion },
+        payload: { newSubscription },
       });
     } catch (e: any) {
       return res
         .status(500)
         .json({ error: true, status: '500', message: e?.message ?? 'internal error', payload: { error: e } });
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
     }
   }
 

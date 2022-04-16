@@ -7,7 +7,8 @@
       "@/helper/*": ["helper/*"],
       "@/api/*": ["pages/api/*"],
       "@/pages/*": ["pages/*"],
-      "@/hooks/*": ["hooks/*"]
+      "@/hooks/*": ["hooks/*"],
+      "@/config/*": ["config/*"]
     },
     "declaration": true,
     "typeRoots": [
