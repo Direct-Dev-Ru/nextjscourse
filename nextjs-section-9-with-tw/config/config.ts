@@ -58,6 +58,11 @@ export class AppConfig {
   }
 }
 
+export const appConfig = AppConfig.getInstance({
+  baseURL: 'http://localhost:3000/api/',
+  defaultPath: 'events',
+});
+
 const apiConfig = {
   extURL: `https://test-project-eab59-default-rtdb.firebaseio.com/`,
   URL: `http://localhost:3000/api/`,
@@ -67,11 +72,5 @@ const apiConfig = {
   defaultPath: 'events',
   defaultFilterEventsFunction: (e: any | undefined) => true,
 };
-
-export const appConfig = AppConfig.getInstance({
-  baseURL: 'http://localhost:3000/api/',
-  defaultPath: 'events',
-  defaultMongoDbURI: `mongodb://fl61user:U%24eRrP%40%24%24w0rd20o2o224@mongo-db:27017/fl61?authSource=fl61&replicaSet=rs0&readPreference=primary&ssl=false`,
-});
 
 export default apiConfig;

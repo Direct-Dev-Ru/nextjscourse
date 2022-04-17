@@ -1,7 +1,7 @@
 import fs, { readFileSync } from 'fs';
 // import path from 'path';
 import { MongoClient } from 'mongodb';
-import { appConfig } from '@/config/config';
+import { apiConf } from '@/config/apiconfig';
 import { logga } from '@/helper/loging/logga';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -10,7 +10,7 @@ import { validator } from '../../../helper/validator';
 const dbPathNewsletter = dbPathBuild('newsletter-data.json');
 
 // Connection URI
-const { mongoDbURI } = appConfig;
+const { mongoDbURI } = apiConf;
 // const uri = 'mongodb+srv://sample-hostname:27017/?maxPoolSize=20&w=majority';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         .json({ error: true, status: '422', message: 'validation error', payload: { email: userEmail } });
     }
     // Create a new MongoClient
-    const client = new MongoClient(mongoDbURI);
+    const dbClient = new MongoClient(mongoDbURI);
     try {
       const { data } = readDbFileData(dbPathNewsletter);
 
@@ -44,12 +44,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       fs.writeFileSync(dbPathNewsletter, JSON.stringify(data));
 
       // Connect the client to the server
-      await client.connect();
+      await dbClient.connect();
       // Establish and verify connection
-      await client.db().command({ ping: 1 });
+      await dbClient.db().command({ ping: 1 });
       logga('Connected successfully to mongodb');
 
-      await client.db().collection('emails-subscriptions').insertOne(newSubscription);
+      await dbClient.db().collection('eventapp-emails-subscriptions').insertOne(newSubscription);
 
       return res.status(201).json({
         error: false,
@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         .json({ error: true, status: '500', message: e?.message ?? 'internal error', payload: { error: e } });
     } finally {
       // Ensures that the client will close when you finish/error
-      await client.close();
+      await dbClient.close();
     }
   }
 

@@ -8,3 +8,5 @@ export const logga: (message: string, ...restMessages: any[]) => void = (message
     }
   }
 };
+
+// logga(process.env.MONGO_URI);

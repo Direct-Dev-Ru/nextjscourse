@@ -23,7 +23,7 @@ const ParentLayout: FunctionComponent<any> = ({ children }) => {
       router: routerMain,
     })
   );
-  const router = useRouter();
+  //   const router = useRouter();
 
   return (
     <Fragment>

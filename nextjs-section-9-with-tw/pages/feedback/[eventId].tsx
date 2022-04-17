@@ -24,7 +24,7 @@ const FeedbackPage = (props: any) => {
   const [feedbackItems, setFeedbackItems] = useState<FeedbackType[] | undefined>([]);
 
   const email = useRef<HTMLInputElement>(null);
-  const message = useRef<HTMLInputElement>(null);
+  const message = useRef<HTMLTextAreaElement>(null);
 
   // Handler for send submit button click event
   const onSendSubmitHandler = async (e: any) => {
@@ -43,7 +43,7 @@ const FeedbackPage = (props: any) => {
         'Content-Type': 'application/json',
       },
     });
-    const data = await response.json();
+    // const data = await response.json();
 
     // console.log(data);
   };

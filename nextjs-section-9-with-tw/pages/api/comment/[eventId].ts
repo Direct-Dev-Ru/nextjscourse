@@ -1,17 +1,28 @@
-import fs, { readFileSync } from 'fs';
 import * as afs from 'fs/promises';
 import path from 'path';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { logga } from '../../../helper/loging/logga';
 import { dbPathBuild, readDbFileData } from '../../../helper/api-utils';
 import { validator } from '../../../helper/validator';
 import { cyrb53 } from '../../../helper/hash';
+import { MongoClient } from 'mongodb';
+import { apiConf } from '@/config/apiconfig';
+import { logga } from '../../../helper/loging/logga';
+
 const dbPathComment = dbPathBuild('comment-data.json');
+// Connection URI
+const { mongoDbURI } = apiConf;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+  // Create a new MongoClient
+  const dbClient = new MongoClient(mongoDbURI);
   try {
     const eventId: string | string[] = req?.query?.eventId ?? undefined;
     const { data } = readDbFileData(dbPathComment);
+    // Connect the client to the server
+    await dbClient.connect();
+    // Establish and verify connection
+    await dbClient.db().command({ ping: 1 });
+    logga('Connected successfully to mongodb');
 
     if (req.method === 'POST') {
       const { email, name, text } = req.body;
@@ -43,7 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       //   end if validation
 
       const newComment = {
-        id: new Date().toISOString(),
+        id: '',
+        when: new Date().toISOString(),
         eventId,
         email: email.trim(),
         name: name.trim(),
@@ -56,7 +68,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           .status(422)
           .json({ error: true, status: '422', message: 'duplicate comment', payload: { newComment } });
       }
+      //   write to MongoDb
+      const db = dbClient.db();
+      const dbCollection = db.collection('eventapp-event-comments');
+      const result = await dbCollection.insertOne(newComment);
+      newComment.id = result.insertedId.toString();
 
+      //   TODO: remove file-based store
+      // write to file
       data.push(newComment);
       await afs.writeFile(dbPathComment, JSON.stringify(data));
 
@@ -81,6 +100,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res
       .status(500)
       .json({ error: true, status: '500', message: e?.message ?? 'internal error', payload: { error: e } });
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await dbClient.close();
   }
 
   if (req.method === '#DELETE') {

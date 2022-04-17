@@ -12,7 +12,7 @@ function CommentList(props) {
         <li key={item.id}>
           <p>{item.text}</p>
           <div>
-            On {item.id} Posted By {item.name} (<address>{item.email}</address>)
+            On {item.when} Posted By {item.name} (<address>{item.email}</address>)
           </div>
         </li>
       ))}
